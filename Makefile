@@ -28,7 +28,7 @@ SKETCH_NAME=Blink.pde
 #  Duemilanove, in GNU/linux: generally /dev/ttyUSB0
 PORT=/dev/ttyACM0
 # The path of Arduino IDE
-ARDUINO_DIR=/home/alvaro/arduino-0022
+ARDUINO_DIR=$(PWD)
 # Boardy type: use "arduino" for Uno or "stk500v1" for Duemilanove
 BOARD_TYPE=arduino
 # Baud-rate: use "115200" for Uno or "19200" for Duemilanove

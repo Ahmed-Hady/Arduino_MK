@@ -22,7 +22,7 @@
 
 #Sketch, board and IDE path configuration (in general change only this section)
 # Sketch filename (should be in the same directory of Makefile)
-SKETCH_NAME=Blink.pde
+SKETCH_NAME=Blink.c
 # The port Arduino is connected
 #  Uno, in GNU/linux: generally /dev/ttyACM0
 #  Duemilanove, in GNU/linux: generally /dev/ttyUSB0
@@ -35,8 +35,8 @@ BOARD_TYPE=arduino
 BAUD_RATE=115200
 
 #Compiler and uploader configuration
-ARDUINO_CORE=$(ARDUINO_DIR)/hardware/arduino/cores/arduino
-INCLUDE=-I. -I$(ARDUINO_DIR)/hardware/arduino/cores/arduino
+ARDUINO_CORE=$(ARDUINO_DIR)/cores/arduino
+INCLUDE=-I. -I$(ARDUINO_DIR)/cores/arduino -I$(ARDUINO_DIR)/variants/standard 
 TMP_DIR=/tmp/build_arduino
 MCU=atmega328p
 DF_CPU=16000000
@@ -48,7 +48,7 @@ CC_FLAGS=-g -Os -w -Wall -ffunction-sections -fdata-sections -fno-exceptions \
 	 -std=gnu99
 CPP_FLAGS=-g -Os -w -Wall -ffunction-sections -fdata-sections -fno-exceptions
 AVRDUDE_CONF=/etc/avrdude.conf
-CORE_C_FILES=pins_arduino WInterrupts wiring_analog wiring wiring_digital \
+CORE_C_FILES= hooks WInterrupts wiring_analog wiring wiring_digital \
 	     wiring_pulse wiring_shift
 CORE_CPP_FILES=HardwareSerial main Print Tone WMath WString
 
@@ -64,7 +64,7 @@ compile:
 		@echo '# *** Compiling...'
 
 		mkdir $(TMP_DIR)
-		echo '#include "WProgram.h"' > "$(TMP_DIR)/$(SKETCH_NAME).cpp"
+		echo '#include "Arduino.h"' > "$(TMP_DIR)/$(SKETCH_NAME).cpp"
 		cat $(SKETCH_NAME) >> "$(TMP_DIR)/$(SKETCH_NAME).cpp"
 
 		@#$(CPP) -MM -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
@@ -112,7 +112,7 @@ reset:
 
 upload:
 		@echo '# *** Uploading...'
-		$(AVRDUDE) -q -V -p $(MCU) -C $(AVRDUDE_CONF) -c $(BOARD_TYPE) \
+		sudo $(AVRDUDE) -q -V -p $(MCU) -C $(AVRDUDE_CONF) -c $(BOARD_TYPE) \
 		           -b $(BAUD_RATE) -P $(PORT) \
 			   -U flash:w:$(TMP_DIR)/$(SKETCH_NAME).hex:i
 		@echo '# *** Done - enjoy your sketch!'

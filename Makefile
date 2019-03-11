@@ -33,19 +33,19 @@ else
 endif
 
 # The path of Arduino IDE
-ARDUINO_DIR=$(PWD)
+KERNEL_DIR=$(PWD)
 # Boardy type: use "arduino" for Uno or "stk500v1" for Duemilanove
 BOARD_TYPE=arduino
 # Baud-rate: use "115200" for Uno or "19200" for Duemilanove
 BAUD_RATE=115200
 
 #Compiler and uploader configuration
-ARDUINO_CORE=$(ARDUINO_DIR)/cores/arduino
+ARDUINO_CORE=$(KERNEL_DIR)/cores/arduino
 INCLUDE=-I. \
-	-I$(ARDUINO_DIR)/cores/arduino \
-	-I$(ARDUINO_DIR)/variants/standard \
-	-I$(ARDUINO_DIR)/drivers/DHTLib \
-	-I$(ARDUINO_DIR)/drivers/LiquidCrystal
+	-I$(KERNEL_DIR)/cores/arduino \
+	-I$(KERNEL_DIR)/variants/standard
+
+include drivers/Makefile
 
 TMP_DIR=$(PWD)/out
 MCU=atmega328p
@@ -61,9 +61,6 @@ AVRDUDE_CONF=/etc/avrdude.conf
 CORE_C_FILES= hooks WInterrupts wiring_analog wiring wiring_digital \
 	     wiring_pulse wiring_shift
 CORE_CPP_FILES=HardwareSerial main Print Tone WMath WString
-
-DRIVERS_CPP_FILES=dht LiquidCrystal
-
 
 all:		clean compile upload
 
@@ -106,9 +103,10 @@ compile:
 		@#Compiling Drivers .cpp dependecies:
 		for drivers_cpp_file in ${DRIVERS_CPP_FILES}; do \
 		    $(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
-		           $(CPP_FLAGS) $(ARDUINO_DIR)/drivers/*/$$drivers_cpp_file.cpp \
+		           $(CPP_FLAGS) $(KERNEL_DIR)/drivers/*/$$drivers_cpp_file.cpp \
 			   -o $(TMP_DIR)/$$drivers_cpp_file.o; \
 		done
+
 
 		@#TODO: compile external libraries here
 		@#TODO: use .d files to track dependencies and compile them

@@ -22,11 +22,12 @@
 
 #Sketch, board and IDE path configuration (in general change only this section)
 # Sketch filename (should be in the same directory of Makefile)
-SKETCH_NAME=Blink.c
+SKETCH_NAME=DHT_PROJECT.c
 # The port Arduino is connected
 #  Uno, in GNU/linux: generally /dev/ttyACM0
 #  Duemilanove, in GNU/linux: generally /dev/ttyUSB0
-PORT=/dev/ttyACM0
+#PORT=/dev/ttyACM0
+PORT=/dev/ttyUSB0
 # The path of Arduino IDE
 ARDUINO_DIR=$(PWD)
 # Boardy type: use "arduino" for Uno or "stk500v1" for Duemilanove
@@ -36,7 +37,12 @@ BAUD_RATE=115200
 
 #Compiler and uploader configuration
 ARDUINO_CORE=$(ARDUINO_DIR)/cores/arduino
-INCLUDE=-I. -I$(ARDUINO_DIR)/cores/arduino -I$(ARDUINO_DIR)/variants/standard 
+INCLUDE=-I. \
+	-I$(ARDUINO_DIR)/cores/arduino \
+	-I$(ARDUINO_DIR)/variants/standard \
+	-I$(ARDUINO_DIR)/drivers/DHTLib \
+	-I$(ARDUINO_DIR)/drivers/LiquidCrystal
+
 TMP_DIR=$(PWD)/out
 MCU=atmega328p
 DF_CPU=16000000
@@ -51,6 +57,8 @@ AVRDUDE_CONF=/etc/avrdude.conf
 CORE_C_FILES= hooks WInterrupts wiring_analog wiring wiring_digital \
 	     wiring_pulse wiring_shift
 CORE_CPP_FILES=HardwareSerial main Print Tone WMath WString
+
+DRIVERS_CPP_FILES=dht LiquidCrystal
 
 
 all:		clean compile upload
@@ -89,6 +97,13 @@ compile:
 		    $(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
 		           $(CPP_FLAGS) $(ARDUINO_CORE)/$$core_cpp_file.cpp \
 			   -o $(TMP_DIR)/$$core_cpp_file.o; \
+		done
+
+		@#Compiling Drivers .cpp dependecies:
+		for drivers_cpp_file in ${DRIVERS_CPP_FILES}; do \
+		    $(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
+		           $(CPP_FLAGS) $(ARDUINO_DIR)/drivers/*/$$drivers_cpp_file.cpp \
+			   -o $(TMP_DIR)/$$drivers_cpp_file.o; \
 		done
 
 		@#TODO: compile external libraries here

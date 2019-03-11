@@ -114,9 +114,14 @@ reset:
 		stty --file $(PORT) -hupcl
 		
 
+ifeq ($(upload),y)
 upload:
 		@echo '# *** Uploading...'
 		sudo $(AVRDUDE) -q -V -p $(MCU) -C $(AVRDUDE_CONF) -c $(BOARD_TYPE) \
 		           -b $(BAUD_RATE) -P $(PORT) \
 			   -U flash:w:$(TMP_DIR)/$(SKETCH_NAME).hex:i
 		@echo '# *** Done - enjoy your sketch!'
+else
+upload:
+endif
+

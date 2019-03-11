@@ -1,3 +1,4 @@
+upload=y
 A_PORT=/dev/ttyUSB0
 # Boardy type: use "arduino" for Uno or "stk500v1" for Duemilanove
 BOARD_TYPE=arduino

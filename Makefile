@@ -70,11 +70,6 @@ compile:
 		echo '#include "Arduino.h"' > "$(TMP_DIR)/$(SKETCH_NAME).cpp"
 		cat $(SKETCH_NAME) >> "$(TMP_DIR)/$(SKETCH_NAME).cpp"
 
-		@#$(CPP) -MM -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
-		#         $(CPP_FLAGS) "$(TMP_DIR)/$(SKETCH_NAME).cpp" \
-		#	 -MF "$(TMP_DIR)/$(SKETCH_NAME).d" \
-		#	 -MT "$(TMP_DIR)/$(SKETCH_NAME).o"
-
 		@#Compiling the sketch file:
 		$(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
 		       $(CPP_FLAGS) "$(TMP_DIR)/$(SKETCH_NAME).cpp" \

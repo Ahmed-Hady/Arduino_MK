@@ -27,8 +27,8 @@ SKETCH_NAME=DHT_PROJECT
 # The port Arduino is connected
 #  Uno, in GNU/linux: generally /dev/ttyACM0
 #  Duemilanove, in GNU/linux: generally /dev/ttyUSB0
-ifneq ($(A_PORT),)
-   PORT=$(A_PORT)
+ifneq ($(CONFIG_PORT),)
+   PORT=$(CONFIG_PORT)
 else
    PORT=/dev/ttyACM0
 endif
@@ -114,7 +114,7 @@ reset:
 		stty --file $(PORT) -hupcl
 		
 
-ifeq ($(upload),y)
+ifeq ($(CONFIG_UPLOAD),y)
 upload:
 		@echo '# *** Uploading...'
 		sudo $(AVRDUDE) -q -V -p $(MCU) -C $(AVRDUDE_CONF) -c $(BOARD_TYPE) \

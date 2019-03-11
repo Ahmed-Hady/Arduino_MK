@@ -37,7 +37,7 @@ BAUD_RATE=115200
 #Compiler and uploader configuration
 ARDUINO_CORE=$(ARDUINO_DIR)/cores/arduino
 INCLUDE=-I. -I$(ARDUINO_DIR)/cores/arduino -I$(ARDUINO_DIR)/variants/standard 
-TMP_DIR=/tmp/build_arduino
+TMP_DIR=$(PWD)/out
 MCU=atmega328p
 DF_CPU=16000000
 CC=/usr/bin/avr-gcc

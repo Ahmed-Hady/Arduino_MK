@@ -26,8 +26,12 @@ SKETCH_NAME=DHT_PROJECT.c
 # The port Arduino is connected
 #  Uno, in GNU/linux: generally /dev/ttyACM0
 #  Duemilanove, in GNU/linux: generally /dev/ttyUSB0
-#PORT=/dev/ttyACM0
-PORT=/dev/ttyUSB0
+ifneq ($(A_PORT),)
+   PORT=$(A_PORT)
+else
+   PORT=/dev/ttyACM0
+endif
+
 # The path of Arduino IDE
 ARDUINO_DIR=$(PWD)
 # Boardy type: use "arduino" for Uno or "stk500v1" for Duemilanove

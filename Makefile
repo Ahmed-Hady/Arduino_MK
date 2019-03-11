@@ -66,7 +66,7 @@ clean:
 compile:
 		@echo '# *** Compiling...'
 
-		mkdir $(TMP_DIR)
+		mkdir -p $(TMP_DIR)/bin
 
 		@#Compiling the sketch file:
 		$(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
@@ -100,10 +100,10 @@ compile:
 		@#      change .c by -MM and use -MF to generate .d
 
 		$(CC) -mmcu=$(MCU) -lm -Wl,--gc-sections -Os \
-		      -o $(TMP_DIR)/$(SKETCH_NAME).elf $(TMP_DIR)/*.o
+		      -o $(TMP_DIR)/bin/$(SKETCH_NAME).elf $(TMP_DIR)/*.o
 		$(AVR_OBJCOPY) -O ihex -R .eeprom \
-		               $(TMP_DIR)/$(SKETCH_NAME).elf \
-			       $(TMP_DIR)/$(SKETCH_NAME).hex
+		               $(TMP_DIR)/bin/$(SKETCH_NAME).elf \
+			       $(TMP_DIR)/bin/$(SKETCH_NAME).hex
 		@echo '# *** Compiled successfully! \o/'
 
 
@@ -119,7 +119,7 @@ upload:
 		@echo '# *** Uploading...'
 		sudo $(AVRDUDE) -q -V -p $(MCU) -C $(AVRDUDE_CONF) -c $(BOARD_TYPE) \
 		           -b $(BAUD_RATE) -P $(PORT) \
-			   -U flash:w:$(TMP_DIR)/$(SKETCH_NAME).hex:i
+			   -U flash:w:$(TMP_DIR)/bin/$(SKETCH_NAME).hex:i
 		@echo '# *** Done - enjoy your sketch!'
 else
 upload:

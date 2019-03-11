@@ -43,6 +43,7 @@ INCLUDE=-I. \
 	-I$(KERNEL_DIR)/variants/standard
 
 include drivers/Makefile
+include libraries/Makefile
 
 TMP_DIR=$(PWD)/out
 CC=/usr/bin/avr-gcc
@@ -67,6 +68,7 @@ compile:
 		@echo '# *** Compiling...'
 
 		mkdir -p $(TMP_DIR)/bin
+		mkdir -p $(TMP_DIR)/lib
 
 		@#Compiling the sketch file:
 		$(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
@@ -85,6 +87,20 @@ compile:
 		    $(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
 		           $(CPP_FLAGS) $(ARDUINO_CORE)/$$core_cpp_file.cpp \
 			   -o $(TMP_DIR)/$$core_cpp_file.o; \
+		done
+
+		@#Compiling Arduino libraries .cpp dependecies:
+		for lib_cpp_file in ${LIB_CPP_FILES}; do \
+		    $(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
+		           $(CPP_FLAGS) $(KERNEL_DIR)/libraries/*/$$lib_cpp_file.cpp \
+			   -o $(TMP_DIR)/lib/$$lib_cpp_file.o; \
+		done
+
+		@#Compiling Arduino libraries .c dependecies:
+		for lib_c_file in ${LIB_C_FILES}; do \
+		    $(CC) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
+		          $(CC_FLAGS) $(KERNEL_DIR)/libraries/*/$$lib_c_file.c \
+			  -o $(TMP_DIR)/lib/$$lib_c_file.o; \
 		done
 
 		@#Compiling Drivers .cpp dependecies:

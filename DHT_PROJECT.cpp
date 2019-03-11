@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include <LiquidCrystal.h> // load lib
 #include "dht.h"
 #define dht_apin A0 // Analog Pin sensor is connected to

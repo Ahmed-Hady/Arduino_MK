@@ -22,7 +22,7 @@
 
 include $(PWD)/config
 
-SKETCH_NAME=DHT_PROJECT.c
+SKETCH_NAME=DHT_PROJECT
 
 # The port Arduino is connected
 #  Uno, in GNU/linux: generally /dev/ttyACM0
@@ -67,12 +67,10 @@ compile:
 		@echo '# *** Compiling...'
 
 		mkdir $(TMP_DIR)
-		echo '#include "Arduino.h"' > "$(TMP_DIR)/$(SKETCH_NAME).cpp"
-		cat $(SKETCH_NAME) >> "$(TMP_DIR)/$(SKETCH_NAME).cpp"
 
 		@#Compiling the sketch file:
 		$(CPP) -c -mmcu=$(MCU) -DF_CPU=$(DF_CPU) $(INCLUDE) \
-		       $(CPP_FLAGS) "$(TMP_DIR)/$(SKETCH_NAME).cpp" \
+		       $(CPP_FLAGS) "$(KERNEL_DIR)/$(SKETCH_NAME).cpp" \
 		       -o "$(TMP_DIR)/$(SKETCH_NAME).o"
 		
 		@#Compiling Arduino core .c dependecies:

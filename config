@@ -1,6 +1,7 @@
 CONFIG_UPLOAD=y
+CONFIG_liquiddisplay=y
 CONFIG_PORT=/dev/ttyUSB0
-
+CONFIG_DHT11=y
 # Boardy type: use "arduino" for Uno or "stk500v1" for Duemilanove
 BOARD_TYPE=arduino
 # Baud-rate: use "115200" for Uno or "19200" for Duemilanove

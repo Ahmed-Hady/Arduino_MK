@@ -20,9 +20,10 @@
 #  http://www.gnu.org/licenses/gpl-2.0.html                                   #
 ###############################################################################
 
-#Sketch, board and IDE path configuration (in general change only this section)
-# Sketch filename (should be in the same directory of Makefile)
+include $(PWD)/config
+
 SKETCH_NAME=DHT_PROJECT.c
+
 # The port Arduino is connected
 #  Uno, in GNU/linux: generally /dev/ttyACM0
 #  Duemilanove, in GNU/linux: generally /dev/ttyUSB0
@@ -34,10 +35,6 @@ endif
 
 # The path of Arduino IDE
 KERNEL_DIR=$(PWD)
-# Boardy type: use "arduino" for Uno or "stk500v1" for Duemilanove
-BOARD_TYPE=arduino
-# Baud-rate: use "115200" for Uno or "19200" for Duemilanove
-BAUD_RATE=115200
 
 #Compiler and uploader configuration
 ARDUINO_CORE=$(KERNEL_DIR)/cores/arduino
@@ -48,8 +45,6 @@ INCLUDE=-I. \
 include drivers/Makefile
 
 TMP_DIR=$(PWD)/out
-MCU=atmega328p
-DF_CPU=16000000
 CC=/usr/bin/avr-gcc
 CPP=/usr/bin/avr-g++
 AVR_OBJCOPY=/usr/bin/avr-objcopy 
@@ -67,7 +62,6 @@ all:		clean compile upload
 clean:
 		@echo '# *** Cleaning...'
 		rm -rf "$(TMP_DIR)"
-
 
 compile:
 		@echo '# *** Compiling...'

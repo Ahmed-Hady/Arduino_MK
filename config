@@ -1,0 +1,7 @@
+A_PORT=/dev/ttyUSB0
+# Boardy type: use "arduino" for Uno or "stk500v1" for Duemilanove
+BOARD_TYPE=arduino
+# Baud-rate: use "115200" for Uno or "19200" for Duemilanove
+BAUD_RATE=115200
+MCU=atmega328p
+DF_CPU=16000000
